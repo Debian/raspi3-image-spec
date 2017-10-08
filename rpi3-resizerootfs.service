@@ -1,0 +1,11 @@
+[Unit]
+Description=resize root file system
+Before=systemd-remount-fs.service
+DefaultDependencies=no
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/rpi3-resizerootfs
+
+[Install]
+RequiredBy=systemd-remount-fs.service

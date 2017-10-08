@@ -1,0 +1,8 @@
+# suggested build result filename
+raspi3.img
+# after compress.sh
+compr.img
+compr.img.bz2
+# log file names used for the published image
+01-vmdb2.log
+02-compress.log
