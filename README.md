@@ -40,7 +40,8 @@ issuing the following:
 
 ```shell
 umask 022
-sudo env -i ./vmdb2/vmdb2 --output raspi3.img raspi3.yaml --log raspi3.log
+sudo env -i HOME="$HOME" LC_CTYPE="${LC_ALL:-${LC_CTYPE:-$LANG}}" PATH="$PATH" USER="$USER" \
+    ./vmdb2/vmdb2 --output raspi3.img raspi3.yaml --log raspi3.log
 ```
 
 ## Installing the image onto the Raspberry Pi 3
