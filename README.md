@@ -10,7 +10,9 @@ See https://wiki.debian.org/RaspberryPi3#Preview_image for where to obtain the l
 ## Option 2: Building your own image
 
 If you prefer, you can build a Debian buster Raspberry Pi 3 image yourself. For
-this, first run the following:
+this, first install the
+[requirements](https://github.com/larswirzenius/vmdb2/blob/master/README#getting-vmdb2)
+of vmdb2. Then run the following:
 
 ```shell
 git clone --recursive https://github.com/Debian/raspi3-image-spec
