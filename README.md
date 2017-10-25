@@ -35,10 +35,11 @@ want to use:
     build may break if there are regressions in the latest versions.
 
 Once you have edited raspi3.yaml, you can generate the image by
-issuing:
+issuing the following:
 
 ```shell
-sudo ./vmdb2/vmdb2 --output raspi3.img raspi3.yaml --log raspi3.log
+umask 022
+sudo env -i ./vmdb2/vmdb2 --output raspi3.img raspi3.yaml --log raspi3.log
 ```
 
 ## Installing the image onto the Raspberry Pi 3
