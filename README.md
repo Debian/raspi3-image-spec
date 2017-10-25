@@ -27,14 +27,14 @@ want to use:
     is pre-configured in raspi3.yaml. However, due to a [missing
     feature](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=763419) on
     snapshots, to make the build work, you have to disable an expiration check
-    by APT. To do so, edit [raspi3.yaml](raspi3.yaml) to replace all
+    by APT. To do so, edit raspi3.yaml to replace all
     `apt-get` invocations with `apt-get -o Acquire::Check-Valid-Until=false`
 - If you want to use the latest versions of each software, you can replace
     `http://snapshot.debian.org/archive/debian/20171007T213914Z/` in raspi3.yaml
     with the URL of your favorite Debian mirror. Of course, this means that the
     build may break if there are regressions in the latest versions.
 
-Once you have edited [raspi3.yaml](raspi3.yaml), you can generate the image by
+Once you have edited raspi3.yaml, you can generate the image by
 issuing:
 
 ```shell
