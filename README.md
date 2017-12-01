@@ -65,12 +65,12 @@ ssh root@rpi3
 
 Note that the default firewall rules only allow SSH access from the local
 network. If you wish to enable SSH access globally, first change your root
-password using `passwd`. Next, issue the following commands to remove the
-corresponding firewall rules:
+password using `passwd`. Next, issue the following commands as root to remove
+the corresponding firewall rules:
 
 ```shell
-sudo iptables -D INPUT 6
-sudo ip6tables -D INPUT 4
+iptables -F INPUT
+ip6tables -F INPUT
 ```
 
 This will allow SSH connections globally until the next reboot. To make this
