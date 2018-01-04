@@ -5,7 +5,7 @@ DefaultDependencies=no
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/rpi3-resizerootfs
+ExecStart=/usr/sbin/rpi3-resizerootfs
 ExecStart=/bin/systemctl --no-reload disable %n
 
 [Install]

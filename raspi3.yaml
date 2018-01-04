@@ -104,7 +104,7 @@ steps:
       install -m 644 -o root -g root rules.v4 "${ROOT?}/etc/iptables/rules.v4"
       install -m 644 -o root -g root rules.v6 "${ROOT?}/etc/iptables/rules.v6"
 
-      install -m 755 -o root -g root rpi3-resizerootfs "${ROOT?}/usr/bin/rpi3-resizerootfs"
+      install -m 755 -o root -g root rpi3-resizerootfs "${ROOT?}/usr/sbin/rpi3-resizerootfs"
       install -m 644 -o root -g root rpi3-resizerootfs.service "${ROOT?}/etc/systemd/system"
       mkdir -p "${ROOT?}/etc/systemd/system/systemd-remount-fs.service.requires/"
       ln -s /etc/systemd/system/rpi3-resizerootfs.service "${ROOT?}/etc/systemd/system/systemd-remount-fs.service.requires/rpi3-resizerootfs.service"
