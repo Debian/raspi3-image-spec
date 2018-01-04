@@ -58,6 +58,33 @@ sub boot_code { 446; }
 sub partition_table_entry { 16; }
 sub partition_table_start_offset { 8; }
 sub partition_table_length_offset { 12; }
+sub partition_count { 4; }
+sub partition_signature_len { 2; }
+sub tablelength { partition_table_entry() * partition_count() + partition_signature_len(); }
+
+# The contents of $original_partition_table must be updated whenever the
+# partition layout on the SD card image changes.
+# This layout matches
+# https://people.debian.org/~stapelberg/raspberrypi3/2017-10-08/2017-10-08-raspberry-pi-3-buster-PREVIEW.img.bz2
+my $original_partition_table = pack('H4' x (tablelength()/2),
+    "0020", "2100", "0c3e", "1826", "0008", "0000", "0058", "0900",
+    "003e", "1926", "837a", "3b7f", "0060", "0900", "00e0", "1500",
+    "0000", "0000", "0000", "0000", "0000", "0000", "0000", "0000",
+    "0000", "0000", "0000", "0000", "0000", "0000", "0000", "0000",
+    "55aa");
+
+sub check_orig_partition_table {
+    my ($offset, $len, $bytes) = @_;
+    sysseek($root, $offset, SEEK_SET)
+        or die qq|sysseek($offset): $!|;
+    my $buf;
+    sysread($root, $buf, $len)
+        or die qq|sysread(): $!|;
+    if ($buf ne $bytes) {
+        print "Partition table already modified\n";
+        exit 0;
+    }
+}
 
 sub read_uint32_le {
     my ($offset) = @_;
@@ -69,6 +96,9 @@ sub read_uint32_le {
     my ($val) = unpack("V", $buf);
     return $val;
 }
+
+# Ensure partition table has not been modified by the user.
+check_orig_partition_table(boot_code(), tablelength(), $original_partition_table);
 
 my $entry_offset = boot_code() + (partition_table_entry() * ($pno - 1));
 my $start     = 512 * read_uint32_le($entry_offset + partition_table_start_offset());
