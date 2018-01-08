@@ -4,7 +4,7 @@
 
 set -e
 
-qemu-img create -f raw compr.img 1000M
+qemu-img create -f raw compr.img 1100M
 
 # copy partition table from raspi3.img
 sfdisk --quiet --dump raspi3.img | sfdisk --quiet compr.img
@@ -25,7 +25,7 @@ rroot="$3"
 set -- ${cmappings[1]}
 croot="$3"
 sudo e2fsck -y -f /dev/mapper/${rroot?}
-sudo resize2fs /dev/mapper/${rroot?} 700M
+sudo resize2fs /dev/mapper/${rroot?} 800M
 sudo e2image -rap /dev/mapper/${rroot?} /dev/mapper/${croot?}
 
 sudo kpartx -ds raspi3.img

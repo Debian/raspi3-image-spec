@@ -68,7 +68,7 @@ sub tablelength { partition_table_entry() * partition_count() + partition_signat
 # https://people.debian.org/~stapelberg/raspberrypi3/2017-10-08/2017-10-08-raspberry-pi-3-buster-PREVIEW.img.bz2
 my $original_partition_table = pack('H4' x (tablelength()/2),
     "0020", "2100", "0c3e", "1826", "0008", "0000", "0058", "0900",
-    "003e", "1926", "837a", "3b7f", "0060", "0900", "00e0", "1500",
+    "003e", "1926", "833a", "2e8c", "0060", "0900", "0000", "1900",
     "0000", "0000", "0000", "0000", "0000", "0000", "0000", "0000",
     "0000", "0000", "0000", "0000", "0000", "0000", "0000", "0000",
     "55aa");
