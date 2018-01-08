@@ -45,14 +45,16 @@ steps:
   # We need to use Debian buster (currently testing) instead of Debian stretch
   # (currently stable) for:
   #
-  # linux ≥ 4.13.4-1
+  # linux ≥ 4.14
   #   Which includes the sdhost driver for faster SD card access and making the
-  #   WiFi chip available.
+  #   WiFi chip available, and has the WiFi driver enabled.
   #
-  # raspi3-firmware ≥ 1.20171006-1
+  # raspi3-firmware ≥ 1.20171201-1
   #   Which includes a recent enough firmware version to correctly pass the MAC
   #   address to the kernel. This is a regression with Linux ≥ 4.12, see
   #   https://github.com/raspberrypi/firmware/issues/846
+  #   Also, this package contains a Raspberry Pi 3-specific firmware file
+  #   required by the WiFi driver.
   - qemu-debootstrap: buster
     mirror: http://deb.debian.org/debian
     target: root-fs
