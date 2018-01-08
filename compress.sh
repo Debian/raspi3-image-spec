@@ -31,4 +31,4 @@ sudo e2image -rap /dev/mapper/${rroot?} /dev/mapper/${croot?}
 sudo kpartx -ds raspi3.img
 sudo kpartx -ds compr.img
 
-bzip2 -k -9 -f compr.img
+xz -8 -f compr.img
