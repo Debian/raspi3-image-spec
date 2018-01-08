@@ -54,7 +54,7 @@ steps:
   #   address to the kernel. This is a regression with Linux ≥ 4.12, see
   #   https://github.com/raspberrypi/firmware/issues/846
   - qemu-debootstrap: buster
-    mirror: http://snapshot.debian.org/archive/debian/20171007T213914Z
+    mirror: http://deb.debian.org/debian
     target: root-fs
     arch: arm64
     components:
@@ -66,7 +66,7 @@ steps:
   # debootstrap is fixed
   - chroot: root-fs
     shell: |
-      echo 'deb http://snapshot.debian.org/archive/debian/20171007T213914Z buster main contrib non-free' > /etc/apt/sources.list
+      echo 'deb http://deb.debian.org/debian buster main contrib non-free' > /etc/apt/sources.list
       apt-get update
 
   - apt: install
@@ -83,7 +83,7 @@ steps:
   # migrated in sufficiently recent versions.
   - chroot: root-fs
     shell: |
-      echo 'deb http://snapshot.debian.org/archive/debian/20171007T213914Z unstable main contrib non-free' >> /etc/apt/sources.list
+      echo 'deb http://deb.debian.org/debian unstable main contrib non-free' >> /etc/apt/sources.list
       echo 'APT::Default-Release "buster";' > /etc/apt/apt.conf.d/08default-release
       apt-get update
       apt-get -y --no-show-progress -t unstable install raspi3-firmware linux-image-arm64
