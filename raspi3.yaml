@@ -34,14 +34,6 @@ steps:
     dirname: '/boot/firmware'
     fs-tag: boot-fs
 
-  # Without copying the archive keyring into the chroot, debootstraps second
-  # stage will revert to a known-working HTTPS mirror. As snapshot.d.o does
-  # not provide HTTPS at this point, we need to avert that.
-  - shell: |
-      mkdir -p "${ROOT?}/usr/share/keyrings"
-      cp /usr/share/keyrings/debian-archive-keyring.gpg "${ROOT?}/usr/share/keyrings/debian-archive-keyring.gpg"
-    root-fs: root-fs
-
   # We need to use Debian buster (currently testing) instead of Debian stretch
   # (currently stable) for:
   #
