@@ -51,7 +51,7 @@ Plug an SD card which you would like to entirely overwrite into your SD card rea
 Assuming your SD card reader provides the device `/dev/sdb`, copy the image onto the SD card:
 
 ```shell
-sudo dd if=raspi3.img of=/dev/sdb bs=5M
+sudo dd if=raspi3.img of=/dev/sdb bs=64k oflag=dsync status=progress
 ```
 
 Then, plug the SD card into the Raspberry Pi 3 and power it up.
