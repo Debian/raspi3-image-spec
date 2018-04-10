@@ -27,7 +27,7 @@ sub slurp {
 my ($rootpart) = grep { $_ ne '' } map { /([^ ]+) \/ / && $1 } split("\n", slurp(</proc/mounts>));
 my $rootdev;
 my $pno;
-if ($rootpart =~ /^(.+)p([0-9])$/) {
+if ($rootpart =~ /^(.+)([0-9])$/) {
     $rootdev = $1;
     $pno = int($2);
 } else {
