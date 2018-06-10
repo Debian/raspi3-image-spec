@@ -1,5 +1,8 @@
 # Raspberry Pi 3 image spec
 
+**NOTE that this image is currently looking for a new maintainer:
+https://people.debian.org/~stapelberg/2018/06/03/raspi3-looking-for-maintainer.html**
+
 This repository contains the files with which the image referenced at
 https://wiki.debian.org/RaspberryPi3 has been built.
 
