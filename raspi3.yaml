@@ -71,6 +71,7 @@ steps:
     - firmware-brcm80211
     - wireless-tools
     - wpasupplicant
+    - nftables
     fs-tag: root-fs
 
   # TODO: install raspi3-firmware and linux-image-arm64 from buster once they
@@ -94,9 +95,7 @@ steps:
 
       install -m 644 -o root -g root eth0 "${ROOT?}/etc/network/interfaces.d/eth0"
 
-      mkdir -p "${ROOT?}/etc/iptables"
-      install -m 644 -o root -g root rules.v4 "${ROOT?}/etc/iptables/rules.v4"
-      install -m 644 -o root -g root rules.v6 "${ROOT?}/etc/iptables/rules.v6"
+      install -m 644 -o root -g root -b nftables.conf "${ROOT?}/etc/nftables.conf"
 
       install -m 755 -o root -g root rpi3-resizerootfs "${ROOT?}/usr/sbin/rpi3-resizerootfs"
       install -m 644 -o root -g root rpi3-resizerootfs.service "${ROOT?}/etc/systemd/system"
