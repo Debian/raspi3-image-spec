@@ -72,11 +72,9 @@ password using `passwd`. Next, issue the following commands as root to remove
 the corresponding firewall rules:
 
 ```shell
-iptables -F INPUT
-ip6tables -F INPUT
+nft flush ruleset
 ```
 
 This will allow SSH connections globally until the next reboot. To make this
-persistent, remove the lines containing "REJECT" in `/etc/iptables/rules.v4` and
-`/etc/iptables/rules.v6`.
+persistent, remove the line "tcp dport ssh reject with tcp reset" in `/etc/nftables.conf`.
 
