@@ -14,7 +14,7 @@ See https://wiki.debian.org/RaspberryPi3#Preview_image for where to obtain the l
 
 If you prefer, you can build a Debian buster Raspberry Pi 3 image yourself. For
 this, first install the
-[requirements](https://github.com/larswirzenius/vmdb2/blob/master/README#getting-vmdb2)
+[requirements](http://git.liw.fi/vmdb2/tree/README#n36)
 of vmdb2. Then run the following:
 
 ```shell
