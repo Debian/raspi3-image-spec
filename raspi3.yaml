@@ -73,14 +73,14 @@ steps:
     - wpasupplicant
     fs-tag: root-fs
 
-  # TODO: install raspi3-firmware and linux-image-arm64 from buster once they
-  # migrated in sufficiently recent versions.
+  # TODO: install linux-image-arm64 from buster once it migrated in a
+  #  sufficiently recent version.
   - chroot: root-fs
     shell: |
-      echo 'deb http://deb.debian.org/debian unstable main contrib non-free' >> /etc/apt/sources.list
+      echo 'deb http://deb.debian.org/debian experimental main contrib non-free' >> /etc/apt/sources.list
       echo 'APT::Default-Release "buster";' > /etc/apt/apt.conf.d/08default-release
       apt-get update
-      apt-get -y --no-show-progress -t unstable install raspi3-firmware linux-image-arm64
+      apt-get -y --no-show-progress -t experimental install linux-image-4.18.0-rc3-arm64-unsigned arm64
 
   - shell: |
       echo "rpi3" > "${ROOT?}/etc/hostname"
