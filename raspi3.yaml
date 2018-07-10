@@ -22,9 +22,11 @@ steps:
 
   - mkfs: vfat
     partition: boot-part
+    label: boot
 
   - mkfs: ext4
     partition: root-part
+    label: root
 
   - mount: root-part
     fs-tag: root-fs

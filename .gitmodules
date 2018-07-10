@@ -1,3 +1,4 @@
 [submodule "vmdb2"]
 	path = vmdb2
-	url = https://github.com/larswirzenius/vmdb2.git
+	url = https://github.com/chschlue/vmdb2.git
+	branch = fs-labels
