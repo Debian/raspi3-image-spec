@@ -66,6 +66,7 @@ steps:
   - apt: install
     packages:
     - ssh
+    - parted
     - dosfstools
     # Contains /lib/firmware/brcm/brcmfmac43430-sdio.bin (required for WiFi).
     - firmware-brcm80211
