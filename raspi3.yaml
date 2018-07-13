@@ -67,6 +67,7 @@ steps:
     packages:
     - ssh
     - dosfstools
+    - raspi3-firmware
     # Contains /lib/firmware/brcm/brcmfmac43430-sdio.bin (required for WiFi).
     - firmware-brcm80211
     - wireless-tools
