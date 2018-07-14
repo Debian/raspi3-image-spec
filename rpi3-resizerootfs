@@ -4,10 +4,20 @@ roottmp=$(lsblk -l -o MAJ:MIN,MOUNTPOINT | grep '/$')
 rootpart=/dev/block/${roottmp% /}
 rootdev=${rootpart%:*}:0
 
-sfdisk -f $rootdev -N 2 <<EOF
+flock $rootdev sfdisk -f $rootdev -N 2 <<EOF
 ,+
 EOF
 
-partprobe
+sleep 5
+
+udevadm settle
+
+sleep 5
+
+flock $rootdev partprobe $rootdev
+
+mount -o remount,rw $rootpart
 
 resize2fs $rootpart
+
+exit 0
