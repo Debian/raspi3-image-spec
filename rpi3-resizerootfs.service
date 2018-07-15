@@ -5,7 +5,7 @@ DefaultDependencies=no
 
 [Service]
 Type=oneshot
-TimeoutSec=600
+TimeoutSec=infinity
 ExecStart=/usr/sbin/rpi3-resizerootfs
 ExecStart=/bin/systemctl --no-reload disable %n
 
