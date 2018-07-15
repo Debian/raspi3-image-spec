@@ -1,6 +1,6 @@
 [Unit]
 Description=resize root file system
-Before=systemd-remount-fs.service
+Before=systemd-fsck-root.service
 DefaultDependencies=no
 
 [Service]
@@ -10,4 +10,4 @@ ExecStart=/usr/sbin/rpi3-resizerootfs
 ExecStart=/bin/systemctl --no-reload disable %n
 
 [Install]
-RequiredBy=systemd-remount-fs.service
+RequiredBy=systemd-fsck-root.service
