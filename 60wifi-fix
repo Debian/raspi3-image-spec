@@ -1,0 +1,36 @@
+#!/bin/sh
+# vim:ts=2:sw=2:et
+# see also:
+# https://kernel-handbook.alioth.debian.org/ch-update-hooks.html#s-kernel-hooks
+
+set -e
+
+# Play nice when run under debconf.
+exec </dev/null >&2
+
+eval set -- "$DEB_MAINT_PARAMS"
+
+# Only run on configure and remove to avoid unnecessary work.
+case "$1" in
+  configure|remove)
+    ;;
+  *)
+    exit 0
+    ;;
+esac
+
+if ischroot ; then
+  true # chroot detected - skip mount point check
+elif test -e /usr/bin/systemd-detect-virt && systemd-detect-virt -q ; then
+  true # virtualization detected - skip mount point check
+elif ! mountpoint -q /boot/firmware; then
+  echo "raspi3-firmware: missing /boot/firmware, did you forget to mount it?" >&2
+  exit 1
+fi
+
+# Ensure the target directory exists. See https://bugs.debian.org/887062
+mkdir -p /boot/firmware
+
+if [ -e "/boot/firmware/bcm2837-rpi-3-b-plus.4.16.dtb" ]; then
+  cp /boot/firmware/bcm2837-rpi-3-b-plus.4.16.dtb /boot/firmware/bcm2710-rpi-3-b-plus.dtb
+fi
