@@ -1,8 +1,9 @@
 #!/bin/sh
 
-roottmp=$(lsblk -l -o MAJ:MIN,MOUNTPOINT | grep '/$')
-rootpart=/dev/block/${roottmp% /}
-rootdev=${rootpart%:*}:0
+roottmp=$(lsblk -l -o NAME,MOUNTPOINT | grep '/$')
+rootpart=/dev/${roottmp%% */}
+rootdev=${rootpart%2}
+rootdev=${rootdev%p}
 
 flock $rootdev sfdisk -f $rootdev -N 2 <<EOF
 ,+
