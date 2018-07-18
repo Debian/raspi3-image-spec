@@ -113,6 +113,11 @@ steps:
       EOT
     root-fs: root-fs
 
+  # Enable nftables.service
+  - chroot: root-fs
+    shell: |
+      systemctl enable nftables
+
   # Clean up archive cache (likely not useful) and lists (likely outdated) to
   # reduce image size by several hundred megabytes.
   - chroot: root-fs
