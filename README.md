@@ -1,8 +1,5 @@
 # Raspberry Pi 3 image spec
 
-**NOTE that this image is currently looking for a new maintainer:
-https://people.debian.org/~stapelberg/2018/06/03/raspi3-looking-for-maintainer.html**
-
 This repository contains the files with which the image referenced at
 https://wiki.debian.org/RaspberryPi3 has been built.
 
@@ -14,7 +11,7 @@ See https://wiki.debian.org/RaspberryPi3#Preview_image for where to obtain the l
 
 If you prefer, you can build a Debian buster Raspberry Pi 3 image yourself. For
 this, first install the
-[requirements](https://github.com/larswirzenius/vmdb2/blob/master/README#getting-vmdb2)
+[requirements](http://git.liw.fi/vmdb2/tree/README)
 of vmdb2. Then run the following:
 
 ```shell

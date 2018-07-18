@@ -1,3 +1,3 @@
 [submodule "vmdb2"]
 	path = vmdb2
-	url = https://github.com/larswirzenius/vmdb2.git
+	url = http://git.liw.fi/vmdb2
