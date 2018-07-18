@@ -1,5 +1,6 @@
-# suggested build result filename
+# suggested build result and log filenames
 raspi3.img
+raspi3.log
 # after compress.sh
 compr.img
 compr.img.bz2
