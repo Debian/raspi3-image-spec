@@ -1,5 +1,5 @@
 # The root file system has fs_passno=1 as per fstab(5) for automatic fsck.
-/dev/mmcblk0p2 / ext4 rw 0 1
+LABEL=root / ext4 rw 0 1
 # All other file systems have fs_passno=2 as per fstab(5) for automatic fsck.
-/dev/mmcblk0p1 /boot/firmware vfat rw 0 2
+LABEL=boot /boot/firmware vfat rw 0 2
 proc /proc proc defaults 0 0
