@@ -68,20 +68,21 @@ steps:
     - ssh
     - parted
     - dosfstools
+    - raspi3-firmware
     # Contains /lib/firmware/brcm/brcmfmac43430-sdio.bin (required for WiFi).
     - firmware-brcm80211
     - wireless-tools
     - wpasupplicant
     fs-tag: root-fs
 
-  # TODO: install raspi3-firmware and linux-image-arm64 from buster once they
-  # migrated in sufficiently recent versions.
+  # TODO: install linux-image-arm64 from buster once it migrated in a
+  #  sufficiently recent version.
   - chroot: root-fs
     shell: |
-      echo 'deb http://deb.debian.org/debian unstable main contrib non-free' >> /etc/apt/sources.list
+      echo 'deb http://deb.debian.org/debian experimental main contrib non-free' >> /etc/apt/sources.list
       echo 'APT::Default-Release "buster";' > /etc/apt/apt.conf.d/08default-release
       apt-get update
-      apt-get -y --no-show-progress -t unstable install raspi3-firmware linux-image-arm64
+      apt-get -y --no-show-progress -t experimental install linux-image-4.18.0-rc5-arm64-unsigned
 
   - shell: |
       echo "rpi3" > "${ROOT?}/etc/hostname"
