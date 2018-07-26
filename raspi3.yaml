@@ -113,7 +113,19 @@ steps:
 
       Please change the root password by running passwd
       EOT
+
+      # Copy RPi 3B+ DTB from linux-4.16
+      install -m 644 -o root -g root bcm2837-rpi-3-b-plus.4.16.dtb "${ROOT?}/boot/firmware"
+      install -m 755 -o root -g root 60wifi-fix "${ROOT?}/etc/kernel/postinst.d"
+      # Copy patched raspi3-firmware
+      install -m 644 -o root -g root raspi3-firmware_1.20180619-1.1_arm64.deb "${ROOT?}/root"
     root-fs: root-fs
+
+  # Install patched raspi3-firmware and old DTB
+  - chroot: root-fs
+    shell: |
+      dpkg -i /root/raspi3-firmware_1.20180619-1.1_arm64.deb
+      cp /boot/firmware/bcm2837-rpi-3-b-plus.4.16.dtb /boot/firmware/bcm2710-rpi-3-b-plus.dtb
 
   # Clean up archive cache (likely not useful) and lists (likely outdated) to
   # reduce image size by several hundred megabytes.
