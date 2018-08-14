@@ -22,9 +22,11 @@ steps:
 
   - mkfs: vfat
     partition: boot-part
+    label: raspiboot
 
   - mkfs: ext4
     partition: root-part
+    label: raspiroot
 
   - mount: root-part
     fs-tag: root-fs
