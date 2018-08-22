@@ -124,12 +124,6 @@ steps:
       apt-get clean
       rm -rf /var/lib/apt/lists
 
-  # Modify the kernel commandline we take from the firmware to boot from
-  # the partition labeled raspiroot instead of forcing it to mmcblk0p2
-  - chroot: root-fs
-    shell: |
-      sed -i 's/.dev.mmcblk0p2/LABEL=raspiroot/' ${ROOT?}/boot/firmware/cmdline.txt
-
   # TODO(https://github.com/larswirzenius/vmdb2/issues/24): remove once vmdb
   # clears /etc/resolv.conf on its own.
   - shell: |
