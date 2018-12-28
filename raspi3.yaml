@@ -12,13 +12,15 @@ steps:
     device: "{{ output }}"
     start: 0%
     end: 20%
-    part-tag: boot-part
+    tag: boot-part
 
   - mkpart: primary
     device: "{{ output }}"
     start: 20%
     end: 100%
-    part-tag: root-part
+    tag: root-part
+
+  - kpartx: "{{ output }}"
 
   - mkfs: vfat
     partition: boot-part
@@ -29,12 +31,10 @@ steps:
     label: RASPIROOT
 
   - mount: root-part
-    fs-tag: root-fs
 
   - mount: boot-part
-    mount-on: root-fs
+    mount-on: root-part
     dirname: '/boot/firmware'
-    fs-tag: boot-fs
 
   # We need to use Debian buster (currently testing) instead of Debian stretch
   # (currently stable) for:
@@ -51,7 +51,7 @@ steps:
   #   required by the WiFi driver.
   - qemu-debootstrap: buster
     mirror: http://deb.debian.org/debian
-    target: root-fs
+    target: root-part
     arch: arm64
     components:
     - main
@@ -60,7 +60,7 @@ steps:
 
   # TODO(https://bugs.debian.org/877855): remove this workaround once
   # debootstrap is fixed
-  - chroot: root-fs
+  - chroot: root-part
     shell: |
       echo 'deb http://deb.debian.org/debian buster main contrib non-free' > /etc/apt/sources.list
       apt-get update
@@ -76,7 +76,7 @@ steps:
     - wpasupplicant
     - raspi3-firmware
     - linux-image-arm64
-    fs-tag: root-fs
+    tag: root-part
 
   - shell: |
       echo "rpi3" > "${ROOT?}/etc/hostname"
@@ -108,18 +108,18 @@ steps:
 
       Please change the root password by running passwd
       EOT
-    root-fs: root-fs
+    root-fs: root-part
 
   # Clean up archive cache (likely not useful) and lists (likely outdated) to
   # reduce image size by several hundred megabytes.
-  - chroot: root-fs
+  - chroot: root-part
     shell: |
       apt-get clean
       rm -rf /var/lib/apt/lists
 
   # Modify the kernel commandline we take from the firmware to boot from
   # the partition labeled raspiroot instead of forcing it to mmcblk0p2
-  - chroot: root-fs
+  - chroot: root-part
     shell: |
       sed -i 's/.dev.mmcblk0p2/LABEL=RASPIROOT/' /boot/firmware/cmdline.txt
 
@@ -127,4 +127,4 @@ steps:
   # clears /etc/resolv.conf on its own.
   - shell: |
       rm "${ROOT?}/etc/resolv.conf"
-    root-fs: root-fs
+    root-fs: root-part
