@@ -18,18 +18,19 @@ steps:
     device: "{{ output }}"
     start: 20%
     end: 100%
-    part-tag: root-part
+    part-tag: root-fs
+
+  - kpartx: "{{ output }}"
 
   - mkfs: vfat
     partition: boot-part
     label: RASPIFIRM
 
   - mkfs: ext4
-    partition: root-part
+    partition: root-fs
     label: RASPIROOT
 
-  - mount: root-part
-    fs-tag: root-fs
+  - mount: root-fs
 
   - mount: boot-part
     mount-on: root-fs
