@@ -37,6 +37,8 @@ steps:
     dirname: '/boot/firmware'
     fs-tag: boot-fs
 
+  - unpack-rootfs: root-fs
+
   # We need to use Debian buster (currently testing) instead of Debian stretch
   # (currently stable) for:
   #
@@ -58,6 +60,7 @@ steps:
     - main
     - contrib
     - non-free
+    unless: rootfs_unpacked
 
   # TODO(https://bugs.debian.org/877855): remove this workaround once
   # debootstrap is fixed
@@ -65,6 +68,7 @@ steps:
     shell: |
       echo 'deb http://deb.debian.org/debian buster main contrib non-free' > /etc/apt/sources.list
       apt-get update
+    unless: rootfs_unpacked
 
   - apt: install
     packages:
@@ -78,6 +82,10 @@ steps:
     - raspi3-firmware
     - linux-image-arm64
     fs-tag: root-fs
+    unless: rootfs_unpacked
+
+  - cache-rootfs: root-fs
+    unless: rootfs_unpacked
 
   - shell: |
       echo "rpi3" > "${ROOT?}/etc/hostname"
@@ -122,6 +130,7 @@ steps:
   # the partition labeled raspiroot instead of forcing it to mmcblk0p2
   - chroot: root-fs
     shell: |
+      ls -aR /boot
       sed -i 's/.dev.mmcblk0p2/LABEL=RASPIROOT/' /boot/firmware/cmdline.txt
 
   # TODO(https://github.com/larswirzenius/vmdb2/issues/24): remove once vmdb
