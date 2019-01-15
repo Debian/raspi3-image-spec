@@ -73,7 +73,8 @@ issuing the following:
 ```shell
 umask 022
 sudo env -i LC_CTYPE=C.UTF-8 PATH="/usr/sbin:/sbin:$PATH" \
-    ./vmdb2/vmdb2 --output raspi3.img raspi3.yaml --log raspi3.log
+    ./vmdb2/vmdb2 --rootfs-tarball=raspi3.tar.gz --output \
+	raspi3.img raspi3.yaml --log raspi3.log
 ```
 
 ## Installing the image onto the Raspberry Pi 3
