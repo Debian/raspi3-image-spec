@@ -112,10 +112,7 @@ steps:
       ln -s /etc/systemd/system/rpi3-generate-ssh-host-keys.service "${ROOT?}/etc/systemd/system/multi-user.target.requires/rpi3-generate-ssh-host-keys.service"
       rm -f ${ROOT?}/etc/ssh/ssh_host_*_key*
 
-      wget https://github.com/raspberrypi/firmware/blob/master/boot/bcm2708-rpi-b.dtb      -O "${ROOT?}/boot/bcm2708-rpi-0-w.dtb"
-      wget https://github.com/raspberrypi/firmware/blob/master/boot/bcm2708-rpi-b-plus.dtb -O "${ROOT?}/boot/bcm2708-rpi-0-w.dtb"
-      wget https://github.com/raspberrypi/firmware/blob/master/boot/bcm2708-rpi-0-w.dtb    -O "${ROOT?}/boot/bcm2708-rpi-0-w.dtb"
-      wget https://github.com/raspberrypi/firmware/blob/master/boot/bcm2708-rpi-cm.dtb    -O "${ROOT?}/boot/bcm2708-rpi-0-w.dtb"
+      cp "${ROOT?}/usr/lib/linux-image-4.19.0.5-rpi/bcm2835-rpi-zero-w.dtb" "${ROOT?}/boot/"
 
       cat >> "${ROOT?}/etc/motd" <<'EOT'
 
@@ -134,12 +131,17 @@ steps:
   # the partition labeled raspiroot instead of forcing it to mmcblk0p2
   #
   # Enable UART in the boot loader to debug
+  # 
+  # Tell start.elf that the kernel is upstream, so the BCM2835 dtb gets loaded
+  # From:
+  # https://www.raspberrypi.org/forums/viewtopic.php?p=1456353&sid=4fb9bf969c9ef5594f38e028b36e39c6#p1456353
   #
   - chroot: /
     shell: |
       ls -aR /boot
       sed -i 's/.dev.mmcblk0p2/LABEL=RASPIROOT/' /boot/firmware/cmdline.txt
       sed -i 's/BOOT_UART=0/BOOT_UART=1/' /boot/firmware/bootcode.bin
+      sed -i '/enable_uart=1/a upstream_kernel=1' /boot/firmware/config.txt
 
   # TODO(https://github.com/larswirzenius/vmdb2/issues/24): remove once vmdb
   # clears /etc/resolv.conf on its own.
