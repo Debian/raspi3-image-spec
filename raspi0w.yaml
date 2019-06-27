@@ -79,7 +79,7 @@ steps:
     - wireless-tools
     - wpasupplicant
     - raspi3-firmware
-    - linux-image-marvell
+    - linux-image-rpi
     tag: /
     unless: rootfs_unpacked
 
