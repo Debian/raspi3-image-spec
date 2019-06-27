@@ -51,7 +51,7 @@ steps:
   #   https://github.com/raspberrypi/firmware/issues/846
   #   Also, this package contains a Raspberry Pi 3-specific firmware file
   #   required by the WiFi driver.
-  - qemu-debootstrap: buster
+  - qemu-debootstrap: sid
     mirror: http://deb.debian.org/debian
     target: /
     arch: armel
@@ -65,7 +65,7 @@ steps:
   # debootstrap is fixed
   - chroot: /
     shell: |
-      echo 'deb http://deb.debian.org/debian buster main contrib non-free' > /etc/apt/sources.list
+      echo 'deb http://deb.debian.org/debian sid main contrib non-free' > /etc/apt/sources.list
       apt-get update
     unless: rootfs_unpacked
 
