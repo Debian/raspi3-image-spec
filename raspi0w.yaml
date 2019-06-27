@@ -132,10 +132,14 @@ steps:
 
   # Modify the kernel commandline we take from the firmware to boot from
   # the partition labeled raspiroot instead of forcing it to mmcblk0p2
+  #
+  # Enable UART in the boot loader to debug
+  #
   - chroot: /
     shell: |
       ls -aR /boot
       sed -i 's/.dev.mmcblk0p2/LABEL=RASPIROOT/' /boot/firmware/cmdline.txt
+      sed -i 's/BOOT_UART=0/BOOT_UART=1/' /boot/firmware/bootcode.bin
 
   # TODO(https://github.com/larswirzenius/vmdb2/issues/24): remove once vmdb
   # clears /etc/resolv.conf on its own.
