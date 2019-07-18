@@ -54,7 +54,7 @@ steps:
   - qemu-debootstrap: buster
     mirror: http://deb.debian.org/debian
     target: /
-    arch: armhf
+    arch: armel
     components:
     - main
     - contrib
@@ -66,6 +66,8 @@ steps:
   - chroot: /
     shell: |
       echo 'deb http://deb.debian.org/debian buster main contrib non-free' > /etc/apt/sources.list
+      echo 'deb http://deb.debian.org/debian experimental main contrib non-free' >> /etc/apt/sources.list
+      echo 'APT::Default-Release "Buster";' > /etc/apt/apt.conf.d/08default-release
       apt-get update
     unless: rootfs_unpacked
 
@@ -74,18 +76,50 @@ steps:
     - ssh
     - parted
     - dosfstools
+    # Contains /lib/firmware/brcm/brcmfmac43430-sdio.bin (required for WiFi).
+    - firmware-brcm80211
     - wireless-tools
     - wpasupplicant
-    - raspi3-firmware
-    - linux-image-armmp
+    # - raspi3-firmware
+    # linux-image >= 5.0.0 is needed (hence the addition of
+    # experimental above and the chrooted command below)
+    # - linux-image-rpi
     tag: /
     unless: rootfs_unpacked
+
+  - apt: install
+    packages:
+    - u-boot-rpi
+    - u-boot-menu
+    tag: /
+
+  - chroot: /
+    shell: |
+      cat > /etc/default/u-boot <<'EOF'
+      ## /etc/default/u-boot - configuration file for
+      ## u-boot-update(8)
+
+      U_BOOT_UPDATE="true"
+
+      U_BOOT_ALTERNATIVES="default recovery"
+      U_BOOT_DEFAULT="l0"
+      U_BOOT_ENTRIES="all"
+      U_BOOT_MENU_LABEL="Debian GNU/Linux"
+      U_BOOT_PARAMETERS="root=/dev/mmcblk0p2 ro rootwait console=tty0"
+      U_BOOT_ROOT=""
+      U_BOOT_TIMEOUT="50"
+      U_BOOT_FDT="bcm2835-rpi-zero-w.dts"
+      #U_BOOT_FDT_DIR="/boot/dtbs/"
+      EOF
+      apt-get -y -t experimental install raspi3-firmware
+      # apt-get -y -t experimental install linux-image-5.0.0-trunk-rpi
+      apt-get -y install linux-image-rpi
 
   - cache-rootfs: /
     unless: rootfs_unpacked
 
   - shell: |
-      echo "rpi2" > "${ROOT?}/etc/hostname"
+      echo "rpi-z" > "${ROOT?}/etc/hostname"
 
       # '..VyaTFxP8kT6' is crypt.crypt('raspberry', '..')
       sed -i 's,root:[^:]*,root:..VyaTFxP8kT6,' "${ROOT?}/etc/shadow"
@@ -110,7 +144,10 @@ steps:
       ln -s /etc/systemd/system/rpi3-generate-ssh-host-keys.service "${ROOT?}/etc/systemd/system/multi-user.target.requires/rpi3-generate-ssh-host-keys.service"
       rm -f ${ROOT?}/etc/ssh/ssh_host_*_key*
 
-      wget https://github.com/raspberrypi/firmware/blob/master/boot/bcm2709-rpi-2-b.dtb    -O "${ROOT?}/boot/bcm2708-rpi-2-b.dtb"
+      wget https://github.com/raspberrypi/firmware/blob/master/boot/bcm2708-rpi-b.dtb      -O "${ROOT?}/boot/firmware/bcm2708-rpi-b.dtb"
+      wget https://github.com/raspberrypi/firmware/blob/master/boot/bcm2708-rpi-b-plus.dtb -O "${ROOT?}/boot/firmware/bcm2708-rpi-b-plus.dtb"
+      wget https://github.com/raspberrypi/firmware/blob/master/boot/bcm2708-rpi-0-w.dtb    -O "${ROOT?}/boot/firmware/bcm2708-rpi-0-w.dtb"
+      wget https://github.com/raspberrypi/firmware/blob/master/boot/bcm2708-rpi-cm.dtb     -O "${ROOT?}/boot/firmware/bcm2708-rpi-cm.dtb"
 
       cat >> "${ROOT?}/etc/motd" <<'EOT'
 
@@ -131,6 +168,12 @@ steps:
     shell: |
       ls -aR /boot
       sed -i 's/.dev.mmcblk0p2/LABEL=RASPIROOT/' /boot/firmware/cmdline.txt
+
+  - chroot: /
+    shell: |
+      cp /usr/lib/u-boot/rpi_0_w/u-boot.bin /boot/firmware/
+      sed -i s/^kernel=.*/kernel=u-boot.bin/ /boot/firmware/config.txt
+      u-boot-update
 
   # TODO(https://github.com/larswirzenius/vmdb2/issues/24): remove once vmdb
   # clears /etc/resolv.conf on its own.

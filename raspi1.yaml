@@ -79,7 +79,7 @@ steps:
     - wireless-tools
     - wpasupplicant
     - raspi3-firmware
-    - linux-image-marvell
+    - linux-image-rpi
     tag: /
     unless: rootfs_unpacked
 
@@ -112,10 +112,10 @@ steps:
       ln -s /etc/systemd/system/rpi3-generate-ssh-host-keys.service "${ROOT?}/etc/systemd/system/multi-user.target.requires/rpi3-generate-ssh-host-keys.service"
       rm -f ${ROOT?}/etc/ssh/ssh_host_*_key*
 
-      wget https://github.com/raspberrypi/firmware/blob/master/boot/bcm2708-rpi-b.dtb      -O "${ROOT?}/boot/bcm2708-rpi-0-w.dtb"
-      wget https://github.com/raspberrypi/firmware/blob/master/boot/bcm2708-rpi-b-plus.dtb -O "${ROOT?}/boot/bcm2708-rpi-0-w.dtb"
-      wget https://github.com/raspberrypi/firmware/blob/master/boot/bcm2708-rpi-0-w.dtb    -O "${ROOT?}/boot/bcm2708-rpi-0-w.dtb"
-      wget https://github.com/raspberrypi/firmware/blob/master/boot/bcm2708-rpi-cm.dtb    -O "${ROOT?}/boot/bcm2708-rpi-0-w.dtb"
+      wget https://github.com/raspberrypi/firmware/blob/master/boot/bcm2708-rpi-b.dtb      -O "${ROOT?}/boot/firmware/bcm2708-rpi-b.dtb"
+      wget https://github.com/raspberrypi/firmware/blob/master/boot/bcm2708-rpi-b-plus.dtb -O "${ROOT?}/boot/firmware/bcm2708-rpi-b-plus.dtb"
+      wget https://github.com/raspberrypi/firmware/blob/master/boot/bcm2708-rpi-0-w.dtb    -O "${ROOT?}/boot/firmware/bcm2708-rpi-0-w.dtb"
+      wget https://github.com/raspberrypi/firmware/blob/master/boot/bcm2708-rpi-cm.dtb     -O "${ROOT?}/boot/firmware/bcm2708-rpi-cm.dtb"
 
       cat >> "${ROOT?}/etc/motd" <<'EOT'
 
